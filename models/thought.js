@@ -1,5 +1,33 @@
-const { triggerAsyncId } = require('async_hooks');
-const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
+
+const reactionSchema = new Schema(
+    {
+      reactionId: {
+        type: Schema.Types.ObjectId,
+        default: () => new Types.ObjectId(),
+      },
+      reationBody: {
+        type: String,
+        required: true,
+        maxlength: 280,
+      },
+      username: {
+        type: String,
+        required: true,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+        get: formatDate,
+      },
+    },
+    {
+      toJSON: {
+        getters: true,
+      },
+      id: false,
+    }
+  );
 
 const thoughtSchema = new Schema(
   {
@@ -18,24 +46,18 @@ const thoughtSchema = new Schema(
       type: String,
       required: true,
     },
-    reactions: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "reaction",
-      },
-    ],
+    reactions:[reactionSchema],
   },
   {
     toJSON: {
-      virtuals: true,
+      getters: true,
     },
     id: false,
   }
 );
 
-const thought = model('thought', thoughtSchema)
+const thought = mongoose.model('thought', thoughtSchema);
 
 module.exports = thought;
 
-//formatDate getter for createdAt
 
