@@ -15,8 +15,8 @@ const thoughtSchema = new Schema(
       get: formatDate,
     },
     username: {
-      type: Schema.Types.ObjectId,
-      ref: "user",
+      type: String,
+      required: true,
     },
     reactions: [
       {
@@ -33,7 +33,9 @@ const thoughtSchema = new Schema(
   }
 );
 
+const thought = model('thought', thoughtSchema)
 
+module.exports = thought;
 
 //formatDate getter for createdAt
 
