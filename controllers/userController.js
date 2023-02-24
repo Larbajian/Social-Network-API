@@ -1,4 +1,4 @@
-const user =  require('../models/user');
+const { user, thought } =  require('../models');
 //const thought = require('../models/thought');
 //const { ObjectId } = require('mongoose').Types;
 
@@ -28,7 +28,7 @@ getSingleUser(req,res) {
 
 createUser(req,res) {
     user.create(req.body)
-      .then((dbUserData) => res.json(dbUserData))
+      .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },
 

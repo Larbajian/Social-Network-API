@@ -1,4 +1,4 @@
-const connection = require('../config/connection');
+/*const connection = require('../config/connection');
 const { user, thought } = require('../models')
 const { getRandomName , getRandomThought} = require('./data');
 
@@ -46,4 +46,4 @@ console.info('Seeding complete! 🌱');
 process.exit(0);
 
 });
-
+*/

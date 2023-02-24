@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const {Schema, model, Types} = require('mongoose');
 
 const reactionSchema = new Schema(
     {
@@ -18,7 +18,7 @@ const reactionSchema = new Schema(
       createdAt: {
         type: Date,
         default: Date.now,
-        get: formatDate,
+        //get: formatDate,
       },
     },
     {
@@ -40,7 +40,7 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: formatDate,
+      //get: formatDate,
     },
     username: {
       type: String,
@@ -56,7 +56,7 @@ const thoughtSchema = new Schema(
   }
 );
 
-const thought = mongoose.model('thought', thoughtSchema);
+const thought = model('thought', thoughtSchema);
 
 module.exports = thought;
 

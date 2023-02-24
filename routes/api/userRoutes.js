@@ -8,10 +8,10 @@ const {
     deleteUser,
 } = require ('../../controllers/userController');
 
-router.route("/api/users").get(getUsers).post(createUser);
+router.route("/").get(getUsers).post(createUser);
 
 router
-  .route("/api/users/:userId")
+  .route("/:userId")
   .get(getSingleUser)
   .put(updateUser)
   .delete(deleteUser);
