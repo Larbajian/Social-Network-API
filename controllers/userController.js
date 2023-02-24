@@ -1,5 +1,7 @@
 const user =  require('../models/user');
 //const thought = require('../models/thought');
+//const { ObjectId } = require('mongoose').Types;
+
 
 module.exports = {
 //GET all users
@@ -59,7 +61,22 @@ deleteUser(req,res) {
 }
 
 //BONUS: Remove a user's associated thoughts when deleted
-//deleteUserThoughts(req,res) {}
+/*deleteUserThoughts(req, res) {
+  Student.findOneAndUpdate(
+    { _id: req.params.studentId },
+    { $pull: { assignment: { assignmentId: req.params.assignmentId } } },
+    { runValidators: true, new: true }
+  )
+    .then((student) =>
+      !student
+        ? res
+            .status(404)
+            .json({ message: 'No student found with that ID :(' })
+        : res.json(student)
+    )
+    .catch((err) => res.status(500).json(err));
+},
+};*/
 
 
 };
