@@ -1,4 +1,5 @@
 const { user, thought } =  require('../models');
+const { populate } = require('../models/user');
 //const thought = require('../models/thought');
 //const { ObjectId } = require('mongoose').Types;
 
@@ -58,7 +59,7 @@ deleteUser(req,res) {
       : res.json(user)
     )
     .catch((err) => res.status(500).json(err));
-}
+},
 
 //BONUS: Remove a user's associated thoughts when deleted
 /*deleteUserThoughts(req, res) {
@@ -77,6 +78,38 @@ deleteUser(req,res) {
     .catch((err) => res.status(500).json(err));
 },
 };*/
+
+addFriend({params},res) {
+  user.findOneAndUpdate(
+    {_id: params.userId},
+    {$addToSet: {friends:params.friendId }},
+    {new: true}
+  )
+  .select('-__v')
+  .populate('friends')
+  .then((user) => 
+  !user 
+    ? res.status(404).json({ message: 'No user to add friend to found with that id.' })
+    : res.json(user)
+    )
+    .catch((err) => res.status(500).json(err));
+},
+
+deleteFriend({params},res) {
+  user.findOneAndUpdate(
+    {_id: params.userId},
+    {$pull: {friends:params.friendId }},
+    {runValidators: true, new: true}
+  )
+  .select('-__v')
+  .populate('friends')
+  .then((user) => 
+  !user 
+    ? res.status(404).json({ message: 'No user to delete friend from found with that id.' })
+    : res.json(user)
+    )
+    .catch((err) => res.status(500).json(err));
+}
 
 
 };
