@@ -1,4 +1,4 @@
-const { user } =  require('../models');
+const { user, thought } =  require('../models');
 const { populate } = require('../models/user');
 
 module.exports = {
@@ -46,35 +46,18 @@ updateUser(req,res) {
         .catch((err) =>res.status(500).json(err));
 },
 
-//DELETE to remove user by its _id
-
-deleteUser(req,res) {
-  user.findOneAndDelete( {_id: req.params.userId} )
-    .then((user) => 
-    !user 
-      ? res.status(404).json({ message: 'No user to delete with this id.'})
-      : res.json(user)
-    )
-    .catch((err) => res.status(500).json(err));
-},
-
 //BONUS: Remove a user's associated thoughts when deleted
-/*deleteUserThoughts(req, res) {
-  Student.findOneAndUpdate(
-    { _id: req.params.studentId },
-    { $pull: { assignment: { assignmentId: req.params.assignmentId } } },
-    { runValidators: true, new: true }
+deleteUserAndThoughts(req, res) {
+  user.findOneAndDelete({ _id: req.params.userId })
+  .then((user) =>
+  !user
+    ? res.status(404).json({message: 'No user found with that id.'})
+    : thought.deleteMany({_id: {$in: user.thoughts}})
   )
-    .then((student) =>
-      !student
-        ? res
-            .status(404)
-            .json({ message: 'No student found with that ID :(' })
-        : res.json(student)
-    )
-    .catch((err) => res.status(500).json(err));
+  .then(() => res.json({ message: "User and user's thoughts deleted!"}))
+  .catch((err) => res.status(500).json(err));
 },
-};*/
+
 
 addFriend({params},res) {
   user.findOneAndUpdate(
