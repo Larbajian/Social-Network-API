@@ -70,9 +70,7 @@ deleteThought(req,res) {
         : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
-  },
-
-///api/thoughts/:thoughtId/reactions
+      },
 
 //POST to create a reaction stored in a single thought's reactions array field
 addReaction(req,res) {
