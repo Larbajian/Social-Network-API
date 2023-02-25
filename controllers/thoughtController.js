@@ -58,14 +58,12 @@ deleteThought(req,res) {
 ///api/thoughts/:thoughtId/reactions
 
 //POST to create a reaction stored in a single thought's reactions array field
-addReaction({params},res) {
+addReaction(req,res) {
     thought.findOneAndUpdate(
-      {_id: params.thoughtId},
-      {$addToSet: {reactions: body}},
-      {new: true}
+        {_id: req.params.thoughtId},
+        {$addToSet: {reactions:req.body}},
+        {runValidators: true, new:true}
     )
-    .select('-__v')
-    .populate('reactions')
     .then((thought) => 
     !thought 
       ? res.status(404).json({ message: 'No thought to add reaction to found with that id.' })
@@ -75,7 +73,7 @@ addReaction({params},res) {
   },
 
 //DELETE to pull and remove a reaction by the reaction's reactionId value
-deleteReaction({params},res) {
+/*deleteReaction({params},res) {
     user.findOneAndUpdate(
       {_id: params.thoughtId},
       {$pull: {reactions:params.reactionId }},
@@ -89,6 +87,7 @@ deleteReaction({params},res) {
       : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
-  }
+    }*/
+  
 
 };
