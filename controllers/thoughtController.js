@@ -88,19 +88,21 @@ addReaction(req,res) {
   },
 
 //DELETE to pull and remove a reaction by the reaction's reactionId value
-deleteReaction(req,res) {
+deleteReaction({params},res) {
     thought.findOneAndUpdate(
-        {_id: req.params.thoughtId},
-        {$pull: req.params.reactionId},
-        {runValidators: true, new:true}
+      {_id: params.thoughtId},
+      {$pull: {reactions:params.reactionId }},
+      {new: true}
     )
+    .select('-__v')
+    .populate('reactions')
     .then((thought) => 
     !thought 
-      ? res.status(404).json({ message: 'No thought to delete reaction to found with that id.' })
-      : res.json(thought)
+      ? res.status(404).json({ message: 'No thought to delete reaction from found with that id.' })
+      : res.json({message: 'Reaction deleted!'})
       )
       .catch((err) => res.status(500).json(err));
-  },
+  }
   
 
 };
