@@ -1,4 +1,5 @@
 const {Schema, model, Types} = require('mongoose');
+const user = require('./user');
 
 const reactionSchema = new Schema(
     {
@@ -14,6 +15,7 @@ const reactionSchema = new Schema(
       username: {
         type: String,
         required: true,
+        ref: 'user',
       },
       createdAt: {
         type: Date,
@@ -23,7 +25,7 @@ const reactionSchema = new Schema(
     },
     {
       toJSON: {
-        getters: true,
+        virtuals: true,
       },
       id: false,
     }

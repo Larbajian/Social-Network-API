@@ -1,4 +1,4 @@
-const{ thought } = require('../models');
+const{ thought, user } = require('../models');
 const { populate } = require('../models/thought');
 
 
@@ -24,10 +24,27 @@ getSingleThought(req,res) {
 
 //POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
 createThought(req,res) {
-    thought.create(req.body)
-      .then((thought) => res.json(thought))
-      .catch((err) => res.status(500).json(err));
-  },
+    thought.create(req.body) 
+    .then((thought) => {
+        return user.findOneAndUpdate(
+            {_id: req.body.userId},
+            {$addToSet: {thoughts: thought._id}},
+            { new: true}
+        );
+    })
+    .then((user) =>
+    !user
+        ? res.status(404).json({ 
+            message: 'Thought made, but no user found with this id.'})
+        : res.json('Thought posted and user found.')
+    )
+    .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+    },
+      
+  
 
 //PUT to update a thought by its _id
 updateThought(req,res) {
